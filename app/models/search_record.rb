@@ -30,6 +30,9 @@ class SearchRecord < ActiveRecord::Base
 
   def notes(month)
     solr_search = DrupalNode.search do
+      adjust_solr_params do |params|
+        params[:qf] = nil
+      end
       fulltext self.key_words
       with(:updated_at).less_than(Time.zone.now)
       facet(:updated_month)
